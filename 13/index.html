@@ -23,7 +23,7 @@
 	<style>
 		body {
 			background-color: white;
-			color: #e47d22;
+			color: #e27f21;
 			font-family: 'Roboto', sans-serif;
 			margin: 0;
 		}
@@ -64,14 +64,15 @@
 		import { CubemapGenerator } from './build/EquirectangularToCubeGenerator.js';
 		import { OBJLoader } from './build/OBJLoader.js';
 		var camera, scene, renderer;
-		var cube, sphere, torus, material;
+		var object, material;
 		var count = 0, cubeCamera1, cubeCamera2;
 		var onPointerDownPointerX, onPointerDownPointerY, onPointerDownLon, onPointerDownLat;
 		var lon = 0, lat = 0;
 		var phi = 0, theta = 0;
 		var textureLoader = new THREE.TextureLoader();
-		textureLoader.load('textures/clouds.jpg', function (texture) {
+		textureLoader.load('textures/hidefclouds.jpg', function (texture) {
 			texture.mapping = THREE.UVMapping;
+			texture.minFilter = THREE.NearestFilter;
 			init(texture);
 			animate();
 		});
@@ -84,19 +85,16 @@
 			renderer.setPixelRatio(window.devicePixelRatio);
 			renderer.setSize(600, 600);
 			scene = new THREE.Scene();
-			camera = new THREE.PerspectiveCamera(60, 600 / 600, 1, 1000);
+			camera = new THREE.PerspectiveCamera(55, 600 / 600, 1, 1000);
 			// background
 			var options = {
-				resolution: 600,
+				resolution: 1024,
 				generateMipmaps: true,
 				minFilter: THREE.LinearMipmapLinearFilter,
 				magFilter: THREE.LinearFilter
 			};
 			scene.background = new CubemapGenerator(renderer).fromEquirectangular(texture, options);
 			//
-
-			var object;
-
 			function loadModel() {
 				object.traverse(function (child) {
 					if (child instanceof THREE.Mesh) {
@@ -105,7 +103,7 @@
 
 					}
 				});
-				object.position.y = -20;
+				object.position.y = -40;
 				object.position.x = -100;
 				object.position.z = 50;
 				object.rotation.z = -0.7;
@@ -133,7 +131,7 @@
 			var loader = new THREE.FontLoader();
 			loader.load('fonts/helvetiker_regular.typeface.json', function (font) {
 				var xMid, text;
-				var color = 0xe47d22;
+				var color = 0xe27f21;
 
 				var matLite = new THREE.MeshBasicMaterial({
 					color: color,
@@ -149,9 +147,9 @@
 				// make shape ( N.B. edge view not visible )
 				text = new THREE.Mesh(geometry, matLite);
 				text.position.z = 0;
-				text.position.y = 145;
+				text.position.y = 125;
 				text.position.x = -200;
-				text.rotation.y = 1.605
+				text.rotation.y = 1.6005
 				scene.add(text);
 				// make line shape ( N.B. edge view remains visible )
 				var holeShapes = [];
@@ -177,11 +175,11 @@
 
 
 
-			cubeCamera1 = new THREE.CubeCamera(1, 1000, 256);
+			cubeCamera1 = new THREE.CubeCamera(1, 100, 256);
 			cubeCamera1.renderTarget.texture.generateMipmaps = true;
 			cubeCamera1.renderTarget.texture.minFilter = THREE.LinearMipmapLinearFilter;
 			scene.add(cubeCamera1);
-			cubeCamera2 = new THREE.CubeCamera(1, 1000, 256);
+			cubeCamera2 = new THREE.CubeCamera(1, 100, 256);
 			cubeCamera2.renderTarget.texture.generateMipmaps = true;
 			cubeCamera2.renderTarget.texture.minFilter = THREE.LinearMipmapLinearFilter;
 			scene.add(cubeCamera2);
@@ -226,7 +224,7 @@
 		}
 		function onDocumentMouseWheel(event) {
 			var fov = camera.fov + event.deltaY * 0.05;
-			camera.fov = THREE.Math.clamp(fov, 10, 75);
+			camera.fov = THREE.Math.clamp(fov, 50, 115);
 			camera.updateProjectionMatrix();
 		}
 		function animate() {
