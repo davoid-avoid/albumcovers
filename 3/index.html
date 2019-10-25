@@ -1,0 +1,118 @@
+<html>
+
+<head>
+    <title>Tribute 3</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='js/howler.js'></script>
+    <script src='js/sticker.js'></script>
+</head>
+
+<body>
+    <div id="blocker" class='visible'></div>
+
+        <div id='coverholder'>
+            <div id="banana" class='sticker'></div>
+        </div>
+
+    <center>
+        <h1>The Velvet Underground and Nico</h1>
+        <h3>the velvet underground</h3>
+        1967 verve
+    </center>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: white;
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+    }
+
+    #blocker {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 2s;
+        z-index: 99;
+        background: url('images/verve.jpg') no-repeat center;
+        background-color: white;
+    }
+
+    .visible {
+        opacity: 1 !important;
+    }
+
+    .nodisplay {
+        display: none;
+    }
+
+    #coverholder {
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 10px;
+        background: url('images/peeled.png') no-repeat center;
+    }
+
+    .layer {
+        position: absolute;
+        transition: opacity 80s;
+        width: 600px;
+        height: 600px;
+        top: 0;
+        left: 0;
+        opacity: 1;
+    }
+
+    #banana {
+        width: 600px;
+        height: 600px;
+    }
+
+    #banana .sticker-img {
+        background: url('images/peel.png') no-repeat center;
+    }
+
+    #banana .sticker-back {
+        background: url('images/peel2.png') no-repeat center;
+    }
+</style>
+
+<script>
+
+    var sunday = new Howl({
+        src: ['audio/sunday.mp3'],
+        volume: 0.7
+    });
+
+    sunday.once('load', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('visible');
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('nodisplay')
+        }, 2000)
+        sunday.play();
+      });
+    
+      sunday.on('end', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('nodisplay')
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('visible')
+        }, 1000)
+        
+      });
+
+      Sticker.init('.sticker');
+
+
+
+</script>

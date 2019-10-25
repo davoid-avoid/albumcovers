@@ -1,0 +1,402 @@
+<html>
+
+<head>
+    <title>Tribute 12</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='js/howler.js'></script>
+</head>
+
+<body>
+    <div id="blocker" class='visible'></div>
+
+        <div id='coverholder'>
+            <div id="nightsky" class="layer nightLayer"></div>
+
+            <div id="clouds-day" class="layer dayLayer"></div>
+            <div id="clouds-night" class="layer nightLayer"></div>
+
+            <div id="mountains-day" class="layer dayLayer"></div>
+            <div id="mountains-night" class="layer nightLayer"></div>
+
+            <div id="fog-back-day" class="layer weather fogBackDay"></div>
+
+            <div id="fore-mountains-day" class="layer dayLayer"></div>
+            <div id="fore-mountains-night" class="layer nightLayer"></div>
+
+            <div id="fog-front-day" class="layer weather fogFrontDay"></div>
+
+            <div id="fore-ground-day" class="layer dayLayer"></div>
+            <div id="fore-ground-night" class="layer nightLayer"></div>
+
+            <div id="rain-night" class="layer weather rainNight"></div>
+            <div id="rain-day" class="layer weather rainDay"></div>
+
+            <div id="frame" class="layer"></div>
+        </div>
+
+    <center>
+        <h1>Visions of the Country</h1>
+        <h3>robbie basho</h3>
+        1975 windham hill
+    </center>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: white;
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
+    }
+
+    #blocker {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 2s;
+        z-index: 99;
+        background: url('img/windham.jpg') no-repeat center;
+        background-color: white;
+    }
+
+    .visible {
+        opacity: 1 !important;
+    }
+
+    .invisible {
+        opacity: 0 !important;
+    }
+
+    .nodisplay {
+        display: none;
+    }
+
+    #coverholder {
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    .layer {
+        width: 600px;
+        height: 600px;
+        position: absolute;
+    }
+
+    #nightsky {
+        background: url('img/night-sky.png');
+        background-position: 0px 0px;    
+    }
+
+    #clouds-day {
+        background: url('img/clouds-day.png');
+        background-position: 0px 0px;
+        -webkit-animation: animatedBackground 50s linear infinite;
+        -moz-animation: animatedBackground 50s linear infinite;
+        animation: animatedBackground 50s linear infinite; 
+        opacity: 1;
+        transition: opacity 20s linear;
+    }
+    
+
+    #clouds-night {
+        background: url('img/clouds-night.png');
+        background-position: 0px 0px;
+        -webkit-animation: animatedBackground 50s linear infinite;
+        -moz-animation: animatedBackground 50s linear infinite;
+        animation: animatedBackground 50s linear infinite;
+        opacity: 0;
+        transition: opacity 20s linear;
+    }
+
+    #mountains-day {
+        background: url('img/mountains-day.png');
+        background-position: 0px 0px;
+        opacity: 1;
+        transition: opacity 16s linear;
+    }
+
+    #mountains-night {
+        background: url('img/mountains-night.png');
+        background-position: 0px 0px;
+        opacity: 0;
+        transition: opacity 16s linear;
+    }
+
+    #fore-mountains-day {
+        background: url('img/fore-mountains-day.png');
+        background-position: 0px 0px;
+        opacity: 1;
+        transition: opacity 13s linear;
+    }
+
+    #fore-mountains-night {
+        background: url('img/fore-mountains-night.png');
+        background-position: 0px 0px;
+        opacity: 0;
+        transition: opacity 13s linear;
+    }
+
+    #fore-ground-day {
+        background: url('img/fore-ground-day.png');
+        background-position: 0px 0px;
+        opacity: 1;
+        transition: opacity 10s linear;
+    }
+
+    #fore-ground-night {
+        background: url('img/fore-ground-night.png');
+        background-position: 0px 0px;
+        opacity: 0;
+        transition: opacity 10s linear;
+    }
+
+    #frame {
+        background: url('img/frame.png');
+        background-position: 0px 0px;
+    }
+
+    .nightTime {
+        opacity: 1 !important;
+    }
+
+    @keyframes animatedBackground {
+        from {
+          background-position: 0px 0px; }
+      
+        to {
+          background-position: -600px 0px; } 
+      }
+
+      @-webkit-keyframes animatedBackground {
+        from {
+          background-position: 0px 0px; }
+      
+        to {
+          background-position: -600px 0px; } 
+      }
+
+    #rain-day {
+        background: url('img/rain-back-day.png');
+        background-position: 0px 0px;
+        opacity: 0;
+        transition: opacity 4s linear;
+        -webkit-animation: animatedBackground 1s infinite steps(10);
+        -moz-animation: animatedBackground 1s infinite steps(10);
+        animation: animatedBackground 1s infinite steps(10);
+    }
+
+    #rain-night {
+        background: url('img/rain-back-night.png');
+        background-position: 0px 0px;
+        opacity: 0;
+        transition: opacity 4s linear;
+        -webkit-animation: animatedBackground 1s infinite steps(10);
+        -moz-animation: animatedBackground 1s infinite steps(10);
+        animation: animatedBackground 1s infinite steps(10);
+    }
+
+    #fog-back-day {
+        background: url('img/fog-back-day.png');
+        background-position: 0px 0px;
+        opacity: 0;
+        transition: opacity 6s linear;
+        -webkit-animation: animatedBackground 10s infinite linear;
+        -moz-animation: animatedBackground 10s infinite linear;
+        animation: animatedBackground 10s infinite linear;
+    }
+
+    #fog-front-day {
+        background: url('img/fog-front-day.png');
+        background-position: 0px 0px;
+        opacity: 0;
+        transition: opacity 4s linear;
+        -webkit-animation: animatedBackground 5s infinite linear;
+        -moz-animation: animatedBackground 5s infinite linear;
+        animation: animatedBackground 5s infinite linear;
+    }
+
+
+</style>
+
+<script>
+
+    var selfcontrol = new Howl({
+        src: ['audio/nightwayc.mp3'],
+        volume: 0.7
+    });
+
+    selfcontrol.once('load', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('visible');
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('nodisplay')
+        }, 2000)
+        selfcontrol.play();
+      });
+    
+      selfcontrol.on('end', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('nodisplay')
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('visible')
+        }, 1000)
+        
+      });
+
+      var timeCounter = 0;
+      var currTime = "day";
+      var currWeather = "none"
+
+      function ticker(){
+          timeCounter++;
+          if (timeCounter >= 5000) {
+            console.log('switching times')
+            if (currTime === "day"){
+                setNightTime();
+            } else {
+                setDayTime();
+            }
+          }
+          if (timeCounter % 500 === 0){
+              console.log('500')
+              if (currWeather === "none"){
+                  getWeather();
+              } else {
+                  checkRemoveWeather();
+              }
+          }
+        setTimeout(function(){
+            ticker();            
+        }, 10)
+      }
+
+      ticker();
+
+
+      function setNightTime(){
+        currTime = "night"
+
+        if (currWeather !== 'rain'){
+            removeWeather();
+        } else {
+            switchRain();
+        }
+
+          let nightLayers = document.getElementsByClassName('nightLayer');
+          for (let i = 0; i < nightLayers.length; i++){
+              nightLayers[i].classList.add('nightTime')
+          }
+          let dayLayers = document.getElementsByClassName('dayLayer');
+            for (let j = 0; j < dayLayers.length; j++){
+                dayLayers[j].classList.add('invisible')
+            }
+          timeCounter = 0;
+      }
+
+      function setDayTime(){
+        currTime = "day"
+
+        if (currWeather !== 'rain'){
+            removeWeather();
+        } else {
+            switchRain();
+        }
+
+        let nightLayers = document.getElementsByClassName('nightLayer');
+        for (let i = 0; i < nightLayers.length; i++){
+            nightLayers[i].classList.remove('nightTime')
+        }
+        let dayLayers = document.getElementsByClassName('dayLayer');
+        for (let j = 0; j < dayLayers.length; j++){
+            dayLayers[j].classList.remove('invisible')
+        }
+        timeCounter = 0;
+    }
+
+    function getWeather(){
+        let chance = Math.floor(Math.random() * ((4 - 1) + 1) + 1);
+        console.log(chance)
+        if (chance === 1){
+        if (currTime === "day"){
+            dayWeather();
+        } else {
+            nightWeather();
+        }
+    }
+    }
+
+    function dayWeather(){
+        let chance = Math.floor(Math.random() * ((2 - 1) + 1) + 1);
+        if (chance === 1){
+            currWeather = "rain"
+            rainLayer = document.getElementById('rain-day')
+            rainLayer.classList.add('visible')
+        } else if (chance === 2){
+            currWeather = "fog"
+            fogbackLayer = document.getElementById('fog-back-day')
+            fogbackLayer.classList.add('visible')
+            fogbackLayer = document.getElementById('fog-front-day')
+            fogbackLayer.classList.add('visible')
+        }
+    }
+
+    function nightWeather(){
+        let chance = Math.floor(Math.random() * ((2 - 1) + 1) + 1);
+        if (chance >= 1){
+            currWeather = "rain"
+            rainLayer = document.getElementById('rain-night')
+            rainLayer.classList.add('visible')
+        }
+    }
+
+
+    function switchRain(){
+        let rainLayerNight = document.getElementById('rain-night')
+        let rainLayerDay = document.getElementById('rain-day')
+        if (currTime === "day"){
+            rainLayerNight.classList.remove('visible')
+            rainLayerDay.classList.add('visible')
+        } else {
+            rainLayerNight.classList.add('visible')
+            rainLayerDay.classList.remove('visible')
+        }
+    }
+
+    function checkRemoveWeather(){
+        let chance = Math.floor(Math.random() * ((4 - 1) + 1) + 1);
+        console.log(chance)
+        if (chance === 1){
+            removeWeather();
+        }
+    }
+
+    function removeWeather(){
+        currWeather = "none"
+        let weatherLayers = document.getElementsByClassName('weather')
+        for (let i = 0; i < weatherLayers.length; i++){
+            weatherLayers[i].classList.remove('visible')
+        }
+    }
+
+
+
+
+
+
+</script>

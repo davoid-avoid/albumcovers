@@ -1,0 +1,141 @@
+<html>
+
+<head>
+    <title>Tribute 2</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='js/howler.js'></script>
+    <script src="js/pixi.min.js"></script>
+</head>
+
+<body>
+    <div id="blocker" class='visible'></div>
+
+        <div id='coverholder'>
+        </div>
+
+    <center>
+        <h1>Peter Gabriel 3 (Melt)</h1>
+        <h3>peter gabriel</h3>
+        1980 virgin
+    </center>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: black;
+        color: white;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+    }
+
+    #blocker {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 2s;
+        z-index: 99;
+        background: url('img/virgin.png') no-repeat center;
+        background-color: black;
+    }
+
+    .visible {
+        opacity: 1 !important;
+    }
+
+    .nodisplay {
+        display: none;
+    }
+
+    #coverholder {
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    .layer {
+        position: absolute;
+        transition: opacity 80s;
+        width: 600px;
+        height: 600px;
+        top: 0;
+        left: 0;
+        opacity: 1;
+    }
+</style>
+
+<script>
+
+    var selfcontrol = new Howl({
+        src: ['audio/selfcontrol.mp3'],
+        volume: 0.7
+    });
+
+    selfcontrol.once('load', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('visible');
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('nodisplay')
+        }, 2000)
+        selfcontrol.play();
+      });
+    
+      selfcontrol.on('end', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('nodisplay')
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('visible')
+        }, 1000)
+        
+      });
+
+      let imageS = 600;
+      let app = new PIXI.Application({width: imageS, height: imageS});
+      let coverHolder = document.getElementById('coverholder')
+      coverHolder.appendChild(app.view);
+
+      let img = new PIXI.Sprite.from("img/melt1.jpg");
+      img.width = imageS;
+      img.height = imageS;
+      app.stage.addChild(img);
+
+      depthMap = new PIXI.Sprite.from("img/melt2.jpg");
+      depthMap.width = imageS;
+      depthMap.height = imageS;
+      app.stage.addChild(depthMap);
+              
+      displacementFilter = new PIXI.filters.DisplacementFilter(depthMap);
+      app.stage.filters = [displacementFilter];
+
+      let posX = 0;
+      let posY = 0;
+      let dirX = "right"
+      let dirY = "down"
+
+      setInterval(function(){
+          displacementFilter.scale.y = (imageS / 2 - posY) / 30;
+          
+          
+          if (dirY === "down"){
+              posY += 5;
+              if (posY >= 3500){
+                  dirY = "up"
+              }
+          } else {
+              posY -= 500;
+              if (posY <= 0){
+                  dirY = "down"
+              }
+          }
+      }, 60)    
+
+
+
+</script>

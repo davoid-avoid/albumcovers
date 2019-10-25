@@ -1,0 +1,290 @@
+<html>
+
+<head>
+    <title>Tribute 8</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='js/howler.js'></script>
+    <script src="js/rough.min.js"></script>
+</head>
+
+<body>
+    <div id="blocker" class='visible'></div>
+
+        <div id='coverholder'>
+            <div id="image"></div>
+            <div id="lines">
+                <canvas id="canvas" width="600px" height="600px"></canvas>
+            </div>
+        </div>
+
+    <center>
+        <h1>TNT</h1>
+        <h3>tortoise</h3>
+        1998 thrill jockey
+    </center>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: white;
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+    }
+
+    #blocker {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 2s;
+        z-index: 99;
+        background: url('img/thrill.jpg') no-repeat center;
+        background-color: white;
+    }
+
+    .visible {
+        opacity: 1 !important;
+    }
+
+    .nodisplay {
+        display: none;
+    }
+
+    #coverholder {
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    #lines {
+        width: 600px;
+        height: 600px;
+        position: absolute;
+        opacity: 1;
+    }
+
+    canvas {
+        width: 600px;
+        height: 600px;
+    }
+
+    #image {
+        width: 600px;
+        height: 600px;
+        position: absolute;
+        opacity: 1;
+        background: url('img/tntbg.jpg') no-repeat center;
+    }
+
+    .layer {
+        position: absolute;
+        transition: opacity 80s;
+        width: 600px;
+        height: 600px;
+        top: 0;
+        left: 0;
+        opacity: 1;
+    }
+</style>
+
+<script>
+
+    var selfcontrol = new Howl({
+        src: ['audio/hillside.mp3'],
+        volume: 0.7
+    });
+
+    selfcontrol.once('load', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('visible');
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('nodisplay')
+        }, 2000)
+        selfcontrol.play();
+      });
+    
+      selfcontrol.on('end', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('nodisplay')
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('visible')
+        }, 1000)
+        
+      });
+
+      let rc = rough.canvas(document.getElementById("canvas"));
+        var ctx = canvas.getContext('2d');
+        var rough = 0.5
+        var mouseOver = false;
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            rc.path(
+                "M134.667,278.336c0,0-25.333-5.667-36.333-12.667s-25-23-25-28.333S67,216.67,70,198.337s15.667-49.331,21.667-51.998s14.667-8.334,16-8.667s26.333-1.667,33,3s18.333,7.667,21.333,10s11.667,10.333,14.667,15.333s9.333,23,11.333,28.667s2.667,27.333,0,35.333s-10.667,22.333-13.667,26s-22,18-26.333,18",
+                { roughness: rough, strokeWidth: 2 }
+            );
+            rc.path(
+                "M87.667,187.005c0,0,5-4.667,6.333-5",
+                { roughness: rough, strokeWidth: 2 }
+            );
+            rc.path(
+                "M103,229.672c0,0-9.333-11.333-9-16.667s-2-10,0-13.667s5-6,6.667-6s10.667,5.666,11,8.333s5.333,11,3,16s-1,12.333-2.667,12S103,229.672,103,229.672z",
+                { roughness: rough, strokeWidth: 2 }
+            );
+
+            rc.path(
+                "M178,180.672c0,0-2.5-1.223-5.5-2.422c-2.19-0.875-5.5,0.422-5.5,0.422",
+                { roughness: rough, strokeWidth: 2 }
+            );
+
+            rc.path(
+                "M171,230.339c0,0,0,0,2.833-0.656s2.5-4.677,4.167-8.011s2.333-16,2.333-18s-5.333-7-6.5-7s-4.5,2-6.833,3.333s-5.667,15.667-5.667,18S167,229.683,167,229.683",
+                { roughness: rough, strokeWidth: 2 }
+            );
+
+            rc.path(
+                "M170.833,239.672c0,0-5.167-0.333-7.833,0s-8.333,0.334-8.333,4.667s6.167,7,8.083,7s10.916-3.815,11.083-5.908s0-4.092,0-4.092",
+                { roughness: rough, strokeWidth: 2 }
+            );
+
+            rc.path(
+                "M143.667,264.339c0,0-4.333-0.333-5,1.667s0.333,4,2.5,4s5.5-4.333,5.5-4.333L143.667,264.339z",
+                { roughness: rough, strokeWidth: 2, fill: "black", fillStyle: "solid" }
+            );
+
+            rc.path(
+                "M96.999,221.134c0,0,2.334-6.128,3.667-5.795s7,3.59,7,5.795s-2.202,5.205-3.434,6.872S96.999,221.134,96.999,221.134z",
+                { roughness: rough, strokeWidth: 2, fill: "black", fillStyle: "solid" }
+            );
+
+            rc.path(
+                "M170.833,228.221c0,0-0.834-3.013,2-7.448c0,0,2.417-2.273,4.292-0.773s0.146,3.582-0.394,5.37S172.917,229.942,170.833,228.221z",
+                { roughness: rough, strokeWidth: 2, fill: "black", fillStyle: "solid" }
+            );
+
+            rc.path(
+                "M128.5,279.336c0.75-0.25-23.75,4.664-29.75,6.914S79,292,74.75,300c0,0-7.75,14.25-8.5,26.75s-3,18.5-3.5,22.75s-1.25,35.5-2.5,42s-2.5,26-3.75,28.25s-5.75,7.75-7.25,10.25s-8.5,13-9.75,17.25s-2,8,0,11s7,5,9.25,3s9.75-14.5,11.5-17s4.25-13.75,4.25-13.75s0.75,9,2.5,12s4,7.5,4,7.5s1.75-7,1.5-9.5s-3.613-15.75-3.307-18.25S70.5,406.75,71,404.5s4-13.25,4-15.5s3.25-29,3.25-31.25S80.5,340,80.75,336s6.5-26.75,8-27s2.5,11.25,2.5,14.5s-0.25,23.75,0,28.25s1,18,3,22s6,18.5,6.5,22s0.25,18-2.75,23S87.75,443,87.75,447s-2.25,21.5-3.5,25s-5.5,21.75-5.5,26s0,19-2,22.25S56,547.75,55,552s-7,23.25-7,23.25s13.75-12.5,14.75-13.75s9.5-11.25,13.25-14s14.5-18.25,14.5-19.5s9.25-12,9.75-14.5s7-18,7.25-19.25s9.75-21,10.25-23s2.75-14.75,3.5-17s6.25-15.5,7.75-16.5s17-22.5,17.5-23.25s4-5,5.25-3.5s4.25,14.25,4.25,16.875s6.75,17.375,7.75,20.125s9.75,18.75,10.5,20.75s3,9.5,5.25,13.25s5.75,16.75,7.25,18.25s6.25,11.25,7.25,17s2.5,15.25,4,18.5s7.75,16,11,17.75s8.75,9,9.75,11s5,4.5,6.25,6s16,7.25,16,7.25s-5.25-11.5-6.75-14.5s-5-15.25-6.75-16.5s-2.25-8.25-3.25-9.25s-5-8.5-6.75-11s-11.5-31.75-11.5-36s-4.25-23.25-5.25-26.75s-2.5-11.75-2.5-18S195,432,195,429.125s-1.5-17.875-1.25-20.125s0-9-0.25-12.25s-3-11-3-15s-1-11.25,0-15.25s0.75-11,0.75-12.75S191,340,190.25,336s-3-24-2.75-27.25s4.75,18,6.75,21.75s10.5,21.75,12.25,21.25s5.25-5,7.75-10s6.25-21.5,7.75-23.75s3-13.75,3.75-18s2.25-15.25,4.25-15.5s21.75-1.25,23-2.25s11.5-4.75,14.75-6.5s15.75-7.75,15.75-10s4.25-3.75,1.25-8.25s-11.25-2.5-12.5-2.5s-11.75,3-13.5,4.75s-7.25,4.568-7.25,4.568h-3.25c0,0,3.25-4.068,3.5-5.568s-2-4.886-3.5-4.193s-9,4.443-11,5.943s-8.5,1.636-10,3.818s-12.5,8.432-12.75,12.932s1,20.25,0,22.75s-4.5,23.25-5.5,23.25s-2.75-7.25-2.75-11.5s0.25-7.25-2.75-11.75s-4-7.75-7.25-10s-10-5.75-13-6s-26.917-9.5-28.583-9.5s-5.81-0.629-5.81-0.629",
+                { roughness: rough, strokeWidth: 2 }
+            );
+
+            rc.path(
+                "M101.25,333.25c0,0,11.819-4,14.035-6.25",
+                { roughness: rough, strokeWidth: 2, fill: "black", fillStyle: "solid" }
+            );
+
+            rc.path(
+                "M107.667,325.75c0,0-0.417,20.5,2.083,22.25",
+                { roughness: rough, strokeWidth: 2, fill: "black", fillStyle: "solid" }
+            );
+
+            rc.path(
+                "M132.25,345.75c0,0-1-16,0-17.5",
+                { roughness: rough, strokeWidth: 2, fill: "black", fillStyle: "solid" }
+            );
+
+            rc.path(
+                "M135.5,328.25c0,0,14.25,16.5,15.25,17.5s2.583-14.25,1.917-18.5",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+            rc.path(
+                "M167,331.25c0,0,16.75,0.75,17-1.125",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+            rc.path(
+                "M175.5,327.25c0,0-2.334,18.5-1.667,20.75",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+            rc.path(
+                "M112.75,364.5c0,0,16.75-2.5,19.5-3s20.5-2.25,24-1.25s17.213-2.25,18.356-2.5",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+            rc.path(
+                "M182,259.5c0,0,8.5-7.5,11.75-16.75s6.5-16,9.25-18.625s5.5-8.614,5.5-10.62s0.25-12.255,0-14.255s-4-15.656-4.75-18.578S201.5,173.5,202,171s4.5-13,5.25-15s5.75-8.75,6.25-11.5s2.25-10.75,3.5-13.5s2.25-6.5,1.5-9",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+            rc.path(
+                "M185.25,261c0,0,2.768-0.5,4.509-1.5s7.991-9.25,9.491-9.25s6.5-7.952,8-10.726s8.25-12.024,8.25-14.024s2-9.229,1-13.989s-1.25-7.761-1-12.261s-0.25-9.989,0-12.245S213.75,172,214.5,171s2.767-8.5,4.258-11.5s6.492-16,7.992-16.75s5.25-5.75,6.5-8s0-6.75,2-8.25s8.5-6.75,8.5-8.5s1-7.75,2-11s2.5-5.75,3-7.5s1.25-13.25,1.75-16.25s2.5-17.5,4-18.5",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+            rc.path(
+                "M183.5,264.318c0,0,10-1.318,10.75-1.568s6.25-1,7.75-3.25s5-10.25,6.5-11.75s5.5-6.952,6.5-8.226s1.5-8.096,2.25-9.185s0-1.589,2.625-5.089s3.125-11.229,3.625-13.739s1-10.261,0-11.761s0.654-10.239,0.577-12.745s1.923-7.755,3.673-9.505s1.25-10.25,3.25-11.25s5-8.25,5.75-9.5s5-4.5,5.75-6.25s4-8.5,5-10.5s5-4.5,5.75-6.5S258,124.75,259,122s3.5-6.75,4-8s2.5-7.25,3.25-9.75s3.75-5,3.75-7.25s-0.75-6.75,0-9.25s2.25-7,2.75-9.75",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+            rc.path(
+                "M231.5,242.75c0,0,28.25-2.702,32.5-3.226s30.25-1.524,34-1.774s16,0.25,23.25,0s22.5,2.678,26.25,2.464s27.75,4.036,32,6.286",
+                { roughness: rough, strokeWidth: 2}
+            );
+            
+            rc.path(
+                "M234.25,215.326c0,0,21.25-2.065,23.75-1.82",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+            rc.path(
+                "M248.25,210c0,0-5,17.178-4.75,20.339",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+            rc.path(
+                "M259,221.773c0,0-3.75,6.919,0,6.448s6.75-2.471,7.5-4.096s-1.25-7.625-3-6.375s-3,2.419-3,2.419s-0.255,2.905,1.498,2.743s8.502-0.937,10.752-3.424s4.5-5.083,4.5-5.083s-7.25,11.095-4.5,10.845s13.072-10.845,13.072-10.845s-13.072,15.022-3.322,15.934S303,206.75,303,206.75s-12.75,23.728-5.75,23.614S312.75,215,315,216.5c0,0-18.5,18.523-2.25,12.262c0,0,8.75-5.397,8-10.205s-8.75-0.01-8.25,3.216s14.5,3.841,18.75-3.216c0,0-8,11.921-2.75,11.807s20.5-13.713,20.5-15.039s0,1.326,0,1.326s3.25,12.829-1.25,13.714s-11,0.635-7.25-3.615s10,3.365,12.5,2.933s17.5-5.594,17.5-9.513s-14.5,5.388-8.75,10.609s11.25,0.495,12-2.017",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+            rc.path(
+                "M294,213.505c0,0,12.75-0.984,14.25-1.995",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+            rc.path(
+                "M334.25,213.485c0,0-1-1.964,1.75-1.975",
+                { roughness: rough, strokeWidth: 2}
+            );
+
+
+
+            if (mouseOver) {
+                setTimeout(function () {
+                    draw()
+                }, 50)
+            }
+        }
+
+        draw();
+
+        canvas.onmouseenter = function () {
+            mouseOver = true;
+            draw();
+        };
+
+        canvas.onmouseleave = function () {
+            mouseOver = false;
+            draw();
+        };
+
+        canvas.onclick = function () {
+            if (mouseOver) {
+                mouseOver = false;
+            } else {
+                mouseOver = true;
+            }
+            draw();
+        };
+
+
+
+</script>

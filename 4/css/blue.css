@@ -1,0 +1,22 @@
+body {
+	background: #22293c;
+	-webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+
+.content {
+	width: 600px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.blue {
+	width: 600px;
+	height: 600px;
+	overflow: hidden;
+	margin: 0 auto;
+	position: relative;
+	margin-top: 10px;
+}

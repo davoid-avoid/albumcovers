@@ -1,0 +1,257 @@
+<html>
+
+<head>
+    <title>Tribute 11</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='js/howler.js'></script>
+    <script src='js/matter.min.js'></script>
+</head>
+
+<body>
+    <div id="blocker" class='visible'></div>
+
+    <div id="clickHandle" onclick="clickStart()"></div>
+
+        <div id='coverholder'>
+            <div id="coverTemp"></div>
+        </div>
+
+    <center>
+        <h1>Rubber Soul</h1>
+        <h3>the beatles</h3>
+        1965 EMI
+    </center>
+    <div id="full-screen-canv"></div>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: white;
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
+    }
+
+    #blocker {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 2s;
+        z-index: 99;
+        background: url('img/emi.png') no-repeat center;
+        background-color: white;
+    }
+
+    #clickHandle {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        z-index: 98;
+        top: 0;
+    }
+
+    .visible {
+        opacity: 1 !important;
+    }
+
+    .nodisplay {
+        display: none;
+    }
+
+    #coverholder {
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 10px;
+        border: 1px solid lightgrey;
+    }
+
+    #coverTemp {
+        width: 600px;
+        height: 600px;
+        background: url('img/soul.jpg') no-repeat center;
+    }
+
+    canvas {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+    }
+
+
+</style>
+
+<script>
+
+    var selfcontrol = new Howl({
+        src: ['audio/wood.mp3'],
+        volume: 0.7
+    });
+
+    selfcontrol.once('load', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('visible');
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('nodisplay')
+        }, 2000)
+        selfcontrol.play();
+      });
+    
+      selfcontrol.on('end', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('nodisplay')
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('visible')
+        }, 1000)
+        
+      });
+
+      var canvas = document.getElementById("full-screen-canv");
+
+      function initCanvas(){
+
+
+      if (canvas.firstChild) {
+        canvas.removeChild(canvas.firstChild);
+      }
+    
+        if (clickReady){
+            startMatter();
+        }
+              
+    }
+
+    window.onresize = initCanvas;
+function startMatter(){
+    var Engine = Matter.Engine,
+    Render = Matter.Render,
+    Runner = Matter.Runner,
+    Composites = Matter.Composites,
+    Common = Matter.Common,
+    MouseConstraint = Matter.MouseConstraint,
+    Mouse = Matter.Mouse,
+    World = Matter.World,
+    Bodies = Matter.Bodies;
+
+// create engine
+var engine = Engine.create(),
+    world = engine.world;
+
+    var canvas = document.getElementById("full-screen-canv");
+// create renderer
+var render = Render.create({
+    element: canvas,
+    engine: engine,
+    options: {
+        width: document.body.clientWidth,
+        height: document.body.clientHeight,
+        showAngleIndicator: false,
+        wireframes: false,
+        background: 'transparent',
+        wireframeBackground: 'transparent',
+        wireframes: false
+    }
+});
+
+Render.run(render);
+
+var runner = Runner.create();
+Runner.run(runner, engine);
+
+var offset = 10,
+    options = { 
+        isStatic: true,
+        fillStyle: 'transparent',
+        fillStyle: 'white'
+    };
+
+world.bodies = [];
+
+World.add(world, [
+    Bodies.rectangle(0, -25, document.body.clientWidth * offset, 50, options),
+    Bodies.rectangle(0, document.body.clientHeight + offset + 25, document.body.clientWidth * offset, 50, options),
+    Bodies.rectangle(document.body.clientWidth + offset + 25, 300, 50, document.body.clientHeight * offset, options),
+    Bodies.rectangle(-offset - 25, 300, 50, document.body.clientHeight * offset, options)
+]);
+
+var stack = Composites.stack((document.body.clientWidth / 2) - 300, 10, 1, 1, 0, 0, function(x, y) {
+
+        return Bodies.rectangle(x, y, 600, 600, {
+            render: {
+                strokeStyle: '#ffffff',
+                sprite: {
+                    texture: './img/soul.jpg'
+                }
+            },
+            restitution: 0.8
+        });
+    
+});
+
+World.add(world, stack);
+
+var mouse = Mouse.create(render.canvas),
+    mouseConstraint = MouseConstraint.create(engine, {
+        mouse: mouse,
+        constraint: {
+            stiffness: 0.01,
+            render: {
+                visible: false
+            }
+        }
+    });
+
+World.add(world, mouseConstraint);
+
+render.mouse = mouse;
+
+Render.lookAt(render, {
+    min: { x: 0, y: 0 },
+    max: { x: document.body.clientWidth, y: document.body.clientHeight }
+});
+
+// context for MatterTools.Demo
+return {
+    engine: engine,
+    runner: runner,
+    render: render,
+    canvas: render.canvas,
+    stop: function() {
+        Matter.Render.stop(render);
+        Matter.Runner.stop(runner);
+    }
+};
+
+
+};
+
+var clickReady = false;
+
+function clickStart(){
+    clickReady = true;
+
+        let image = document.getElementById('coverTemp')
+        clickHandle.classList.add('nodisplay')
+        image.classList.add('nodisplay')
+        initCanvas();
+
+}
+
+</script>

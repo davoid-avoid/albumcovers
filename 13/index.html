@@ -1,0 +1,291 @@
+<html>
+
+<head>
+	<title>Tribute 13</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='js/howler.js'></script>
+</head>
+
+<body>
+	<div id="blocker" class='visible'></div>
+
+	<div id='cover-holder'>
+	</div>
+	</div>
+
+	<center>
+		<h1>Tubular Bells</h1>
+		<h3>mike oldfield</h3>
+		1973 virgin
+	</center>
+
+
+	<style>
+		body {
+			background-color: white;
+			color: #e47d22;
+			font-family: 'Roboto', sans-serif;
+			margin: 0;
+		}
+
+		#blocker {
+			position: fixed;
+			width: 100vw;
+			height: 100vh;
+			opacity: 0;
+			transition: opacity 2s;
+			z-index: 99;
+			background: url('img/virgin.png') no-repeat center;
+			background-color: white;
+		}
+
+		.visible {
+			opacity: 1 !important;
+		}
+
+		.nodisplay {
+			display: none;
+		}
+
+		#cover-holder {
+			width: 600px;
+			height: 600px;
+			overflow: hidden;
+			margin: 0 auto;
+			position: relative;
+			margin-top: 10px;
+		}
+	</style>
+
+
+
+	<script type="module">
+		import * as THREE from './build/three.module.js';
+		import { CubemapGenerator } from './build/EquirectangularToCubeGenerator.js';
+		import { OBJLoader } from './build/OBJLoader.js';
+		var camera, scene, renderer;
+		var cube, sphere, torus, material;
+		var count = 0, cubeCamera1, cubeCamera2;
+		var onPointerDownPointerX, onPointerDownPointerY, onPointerDownLon, onPointerDownLat;
+		var lon = 0, lat = 0;
+		var phi = 0, theta = 0;
+		var textureLoader = new THREE.TextureLoader();
+		textureLoader.load('textures/clouds.jpg', function (texture) {
+			texture.mapping = THREE.UVMapping;
+			init(texture);
+			animate();
+		});
+
+		function init(texture) {
+
+
+
+			renderer = new THREE.WebGLRenderer({ antialias: true });
+			renderer.setPixelRatio(window.devicePixelRatio);
+			renderer.setSize(600, 600);
+			scene = new THREE.Scene();
+			camera = new THREE.PerspectiveCamera(60, 600 / 600, 1, 1000);
+			// background
+			var options = {
+				resolution: 600,
+				generateMipmaps: true,
+				minFilter: THREE.LinearMipmapLinearFilter,
+				magFilter: THREE.LinearFilter
+			};
+			scene.background = new CubemapGenerator(renderer).fromEquirectangular(texture, options);
+			//
+
+			var object;
+
+			function loadModel() {
+				object.traverse(function (child) {
+					if (child instanceof THREE.Mesh) {
+
+						child.material = material;
+
+					}
+				});
+				object.position.y = -20;
+				object.position.x = -100;
+				object.position.z = 50;
+				object.rotation.z = -0.7;
+				object.rotation.x = 0.7;
+				object.rotation.y = 0.7;
+				object.scale.set(1.2, 1.2, 1.2)
+				scene.add(object);
+			}
+			var manager = new THREE.LoadingManager(loadModel);
+			manager.onProgress = function (item, loaded, total) {
+				console.log(item, loaded, total);
+			};
+
+			function onProgress(xhr) {
+				if (xhr.lengthComputable) {
+					var percentComplete = xhr.loaded / xhr.total * 100;
+					console.log('model ' + Math.round(percentComplete, 2) + '% downloaded');
+				}
+			}
+
+			function onError() {
+
+			}
+
+			var loader = new THREE.FontLoader();
+			loader.load('fonts/helvetiker_regular.typeface.json', function (font) {
+				var xMid, text;
+				var color = 0xe47d22;
+
+				var matLite = new THREE.MeshBasicMaterial({
+					color: color,
+					opacity: 1,
+					side: THREE.DoubleSide
+				});
+				var message = "TUBULAR BELLS\n   Mike Oldfield";
+				var shapes = font.generateShapes(message, 12);
+				var geometry = new THREE.ShapeBufferGeometry(shapes);
+				geometry.computeBoundingBox();
+				xMid = - 0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
+				geometry.translate(xMid, 0, 0);
+				// make shape ( N.B. edge view not visible )
+				text = new THREE.Mesh(geometry, matLite);
+				text.position.z = 0;
+				text.position.y = 145;
+				text.position.x = -200;
+				text.rotation.y = 1.605
+				scene.add(text);
+				// make line shape ( N.B. edge view remains visible )
+				var holeShapes = [];
+				for (var i = 0; i < shapes.length; i++) {
+					var shape = shapes[i];
+					if (shape.holes && shape.holes.length > 0) {
+						for (var j = 0; j < shape.holes.length; j++) {
+							var hole = shape.holes[j];
+							holeShapes.push(hole);
+						}
+					}
+				}
+				shapes.push.apply(shapes, holeShapes);
+				var lineText = new THREE.Object3D();
+				for (var i = 0; i < shapes.length; i++) {
+					var shape = shapes[i];
+					var points = shape.getPoints();
+					var geometry = new THREE.BufferGeometry().setFromPoints(points);
+					geometry.translate(xMid, 0, 0);
+				}
+				scene.add(lineText);
+			}); //end load function
+
+
+
+			cubeCamera1 = new THREE.CubeCamera(1, 1000, 256);
+			cubeCamera1.renderTarget.texture.generateMipmaps = true;
+			cubeCamera1.renderTarget.texture.minFilter = THREE.LinearMipmapLinearFilter;
+			scene.add(cubeCamera1);
+			cubeCamera2 = new THREE.CubeCamera(1, 1000, 256);
+			cubeCamera2.renderTarget.texture.generateMipmaps = true;
+			cubeCamera2.renderTarget.texture.minFilter = THREE.LinearMipmapLinearFilter;
+			scene.add(cubeCamera2);
+			let target = document.getElementById('cover-holder')
+			target.appendChild(renderer.domElement);
+			//
+			material = new THREE.MeshBasicMaterial({
+				envMap: cubeCamera2.renderTarget.texture
+			});
+
+			var loader = new OBJLoader(manager);
+			loader.load('models/bell.obj', function (obj) {
+				object = obj;
+			}, onProgress, onError);
+
+
+			document.addEventListener('mousedown', onDocumentMouseDown, false);
+			document.addEventListener('wheel', onDocumentMouseWheel, false);
+			window.addEventListener('resize', onWindowResized, false);
+		}
+		function onWindowResized() {
+			renderer.setSize(600, 600);
+			camera.aspect = 600 / 600;
+			camera.updateProjectionMatrix();
+		}
+		function onDocumentMouseDown(event) {
+			event.preventDefault();
+			onPointerDownPointerX = event.clientX;
+			onPointerDownPointerY = event.clientY;
+			onPointerDownLon = lon;
+			onPointerDownLat = lat;
+			document.addEventListener('mousemove', onDocumentMouseMove, false);
+			document.addEventListener('mouseup', onDocumentMouseUp, false);
+		}
+		function onDocumentMouseMove(event) {
+			lon = (event.clientX - onPointerDownPointerX) * 0.1 + onPointerDownLon;
+			lat = (event.clientY - onPointerDownPointerY) * 0.1 + onPointerDownLat;
+		}
+		function onDocumentMouseUp() {
+			document.removeEventListener('mousemove', onDocumentMouseMove, false);
+			document.removeEventListener('mouseup', onDocumentMouseUp, false);
+		}
+		function onDocumentMouseWheel(event) {
+			var fov = camera.fov + event.deltaY * 0.05;
+			camera.fov = THREE.Math.clamp(fov, 10, 75);
+			camera.updateProjectionMatrix();
+		}
+		function animate() {
+			requestAnimationFrame(animate);
+			render();
+		}
+		function render() {
+			var time = Date.now();
+			lon += .0;
+			lat = Math.max(- 85, Math.min(85, lat));
+			phi = THREE.Math.degToRad(90 - lat);
+			theta = THREE.Math.degToRad(lon);
+			camera.position.x = 100 * Math.sin(phi) * Math.cos(theta);
+			camera.position.y = 100 * Math.cos(phi);
+			camera.position.z = 100 * Math.sin(phi) * Math.sin(theta);
+
+			camera.lookAt(scene.position);
+			// pingpong
+			if (count % 2 === 0) {
+				material.envMap = cubeCamera1.renderTarget.texture;
+				cubeCamera2.update(renderer, scene);
+			} else {
+				material.envMap = cubeCamera2.renderTarget.texture;
+				cubeCamera1.update(renderer, scene);
+			}
+			count++;
+			renderer.render(scene, camera);
+		}
+
+		
+	</script>
+
+</body>
+
+</html>
+
+<script>
+	var selfcontrol = new Howl({
+		src: ['audio/tubular.mp3'],
+		volume: 0.7
+	});
+
+	selfcontrol.once('load', function(){
+		let blocker = document.getElementById('blocker')
+		blocker.classList.remove('visible');
+		setTimeout(function(){
+			let blocker = document.getElementById('blocker')
+			blocker.classList.add('nodisplay')
+		}, 2000)
+		selfcontrol.play();
+	  });
+	
+	  selfcontrol.on('end', function(){
+		let blocker = document.getElementById('blocker')
+		blocker.classList.remove('nodisplay')
+		setTimeout(function(){
+			let blocker = document.getElementById('blocker')
+			blocker.classList.add('visible')
+		}, 1000)
+		
+	  });
+</script>

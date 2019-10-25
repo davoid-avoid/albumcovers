@@ -1,0 +1,145 @@
+<html>
+
+<head>
+    <title>Tribute 6</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='js/howler.js'></script>
+    <script src="js/pixi.min.js"></script>
+</head>
+
+<body>
+    <div id="blocker" class='visible'></div>
+
+        <div id="top"></div>
+        <div id='coverholder'>
+        </div>
+        <div id="bottom"></div>
+
+    <center>
+        <h1>Nebraska</h1>
+        <h3>bruce springsteen</h3>
+        1982 columbia
+    </center>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: black;
+        color: white;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+    }
+
+    #blocker {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 2s;
+        z-index: 99;
+        background: url('img/columbia.jpg') no-repeat center;
+        background-color: black;
+    }
+
+    .visible {
+        opacity: 1 !important;
+    }
+
+    .nodisplay {
+        display: none;
+    }
+
+    #top {
+        width: 600px;
+        height: 98px;
+        margin: 0 auto;
+        margin-top: 10px;
+        position: relative;
+        background: url('img/top.jpg') no-repeat center;
+    }
+
+    #bottom {
+        width: 600px;
+        height: 103px;
+        margin: 0 auto;
+        position: relative;
+        background: url('img/bottom.jpg') no-repeat center;
+    }
+
+    #coverholder {
+        width: 600px;
+        height: 400px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .layer {
+        position: absolute;
+        transition: opacity 80s;
+        width: 600px;
+        height: 400px;
+        top: 0;
+        left: 0;
+        opacity: 1;
+    }
+</style>
+
+<script>
+
+    var selfcontrol = new Howl({
+        src: ['audio/nebraska.mp3'],
+        volume: 0.7
+    });
+
+    selfcontrol.once('load', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('visible');
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('nodisplay')
+        }, 2000)
+        selfcontrol.play();
+      });
+    
+      selfcontrol.on('end', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('nodisplay')
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('visible')
+        }, 1000)
+        
+      });
+
+      let imageS = 600;
+      let imageH = 400;
+      let app = new PIXI.Application({width: imageS, height: imageH});
+      let coverHolder = document.getElementById('coverholder')
+      coverHolder.appendChild(app.view);
+
+      let img = new PIXI.Sprite.from("img/neb.jpg");
+      img.width = imageS;
+      img.height = imageH;
+      app.stage.addChild(img);
+
+      depthMap = new PIXI.Sprite.from("img/nebmask.jpg");
+      depthMap.width = imageS;
+      depthMap.height = imageH;
+      app.stage.addChild(depthMap);
+              
+      displacementFilter = new PIXI.filters.DisplacementFilter(depthMap);
+      app.stage.filters = [displacementFilter];
+
+      console.log(displacementFilter)
+
+      window.onmousemove = function(e) {
+        console.log('mouse moving')
+        displacementFilter.scale.x = (window.innerWidth / 2 - e.clientX) /20;
+    };
+
+
+
+</script>

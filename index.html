@@ -1,0 +1,431 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<title>Tributes</title>
+<style>
+    body {
+        text-align: center;
+        font-size: 20pt;
+        font-family: Roboto;  
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+         -khtml-user-select: none; /* Konqueror HTML */
+           -moz-user-select: none; /* Old versions of Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently
+                                      supported by Chrome, Opera and Firefox */
+    }
+    .top {
+        width: 100%;
+        position: relative;
+        height: 500px;
+    }
+    .middle {
+        width: 100%;
+        position: relative;
+    }
+    .instruct {
+        text-align: center;
+        width: 100%;
+    }
+
+    .controls {
+        width: 265px;
+        display: flex;
+        margin: 0 auto;
+        margin-top: 30px;
+    }
+    .button {
+        background: white;
+        color: black;
+        cursor: pointer;
+        transition: all 0.3s;
+        padding: 10px;
+        font-size: 12pt;
+        line-height: 19pt;
+    }
+    .button:hover {
+        background: black;
+        color: white;
+    }
+    .disabled-button {
+        opacity: 0.2;
+        cursor: default;
+    }
+    .disabled-button:hover {
+        background: white;
+        color: black;
+    }
+    #prev {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        margin-right: 10px;
+        font-size: 20pt;
+    }
+    #select {
+        width: 140px;
+        height: 25px;
+        border: 2px black solid;
+    }
+    #next {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        margin-left: 10px;
+        font-size: 20pt;
+    }
+    .shelf {
+        width: 520px;
+        height: 400px;
+        position: relative;
+        margin: 0 auto;
+        top: 50px;
+    }
+
+    .record {
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        transition: all 0.5s;
+        border: 1px black solid;
+        transform: rotate(0deg);
+        cursor: pointer;
+    }
+
+    .selected {
+        left: -200px !important;
+        transform: rotate(-10deg);
+    }
+
+    .unselected-1 {
+        left: 30px;
+    }
+
+    .unselected-2 {
+        left: 60px;
+    }
+
+    .unselected-3 {
+        left: 90px;
+    }
+
+    .unselected-4 {
+        left: 120px;
+    }
+
+    .unselected-5 {
+        left: 150px;
+    }
+
+    .unselected-6 {
+        left: 180px;
+    }
+
+    .unselected-7 {
+        left: 210px;
+    }
+
+    .unselected-8 {
+        left: 240px;
+    }
+
+    .unselected-9 {
+        left: 270px;
+    }
+
+    .unselected-10 {
+        left: 300px;
+    }
+
+    .unselected-11 {
+        left: 330px;
+    }
+
+    .unselected-12 {
+        left: 360px;
+    }
+
+    .unselected-13 {
+        left: 390px;
+    }
+
+    #joydivision {
+        background: url('covers/unknown-pleasures.jpg');
+        background-size: contain;
+    }
+
+    #brighteyes {
+        background: url('covers/wide-awake.jpg');
+        background-size: contain;
+    }
+
+    #velvet {
+        background: url('covers/velvet.jpg');
+        background-size: contain;
+    }
+
+    #blue {
+        background: url('covers/blue.jpg');
+        background-size: contain;
+    }
+
+    #melt {
+        background: url('covers/melt.jpg');
+        background-size: contain;
+    }
+
+    #nebraska {
+        background: url('covers/nebraska.jpg');
+        background-size: contain;
+    }
+
+    #canyon {
+        background: url('covers/canyon.jpg');
+        background-size: contain;
+    }
+
+    #tnt {
+        background: url('covers/tnt.jpg');
+        background-size: contain;
+    }
+
+    #shout {
+        background: url('covers/shout.jpg');
+        background-size: contain;
+    }
+
+    #tracks {
+        background: url('covers/tracks.jpg');
+        background-size: contain;
+    }
+
+    #soul {
+        background: url('covers/soul.jpg');
+        background-size: contain;
+    }
+
+    #country {
+        background: url('covers/country.jpg');
+        background-size: contain;
+    }
+
+    #tubular {
+        background: url('covers/tubular.jpg');
+        background-size: contain;
+    }
+
+    @media screen and (max-width: 1000px){
+        .top {
+            width: 100%;
+            position: relative;
+            height: 250px;
+        }
+        .middle {
+            width: 100%;
+            position: relative;
+        }
+        .instruct {
+            text-align: center;
+            width: 100%;
+        }
+
+
+        .shelf {
+            width: 400px;
+            height: 200px;
+            position: relative;
+            margin: 0 auto;
+            top: 40px;
+        }
+    
+        .record {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            transition: all 0.5s;
+            border: 1px black solid;
+            transform: rotate(0deg);
+            cursor: pointer;
+        }
+
+        
+    .selected {
+        left: -100px !important;
+        transform: rotate(-10deg);
+    }
+
+    .unselected-1 {
+        left: 20px;
+    }
+
+    .unselected-2 {
+        left: 40px;
+    }
+
+    .unselected-3 {
+        left: 60px;
+    }
+
+    .unselected-4 {
+        left: 80px;
+    }
+
+    .unselected-5 {
+        left: 100px;
+    }
+
+    .unselected-6 {
+        left: 120px;
+    }
+
+    .unselected-7 {
+        left: 140px;
+    }
+
+    .unselected-8 {
+        left: 160px;
+    }
+
+    .unselected-9 {
+        left: 180px;
+    }
+
+    .unselected-10 {
+        left: 200px;
+    }
+
+    .unselected-11 {
+        left: 220px;
+    }
+
+    .unselected-12 {
+        left: 240px;
+    }
+
+    .unselected-13 {
+        left: 260px;
+    }
+    }
+</style>
+</head>
+<body>
+<div class="top">
+<div class="shelf">
+    <div id="joydivision" class="record unselected-1" onclick="selectRecordClick('1')"></div>
+    <div id="melt" class="record unselected-2" onclick="selectRecordClick('2')"></div>
+    <div id="velvet" class="record unselected-3" onclick="selectRecordClick('3')"></div>
+    <div id="blue" class="record unselected-4" onclick="selectRecordClick('4')"></div>
+    <div id="brighteyes" class="record unselected-5" onclick="selectRecordClick('5')"></div>
+    <div id="nebraska" class="record unselected-6" onclick="selectRecordClick('6')"></div>
+    <div id="canyon" class="record unselected-7" onclick="selectRecordClick('7')"></div>
+    <div id="tnt" class="record unselected-8" onclick="selectRecordClick('8')"></div>
+    <div id="tracks" class="record unselected-9" onclick="selectRecordClick('9')"></div>
+    <div id="shout" class="record unselected-10" onclick="selectRecordClick('10')"></div>
+    <div id="soul" class="record unselected-11" onclick="selectRecordClick('11')"></div>
+    <div id="country" class="record unselected-12" onclick="selectRecordClick('12')"></div>
+    <div id="tubular" class="record unselected-13" onclick="selectRecordClick('13')"></div>
+</div>
+</div>
+<div class="middle">
+    <div class="controls">
+        <div id="prev" class="button" onclick="prevRecord()"><</div>
+        <div id="select" class="button" onclick="selectRecordMove()">Play Record</div>
+        <div id="next" class="button" onclick="nextRecord()">></div>
+    </div>
+</div>
+
+
+<script>
+    let selected = 1;
+    let amount = 13;
+
+    function selectRecord(){
+        let records = document.getElementsByClassName('record')
+        for (let i = 0; i < records.length; i++){
+            records[i].classList.remove('selected')
+            if (records[i].classList.contains('unselected-' + selected)){
+                records[i].classList.add('selected')
+            }
+        }
+    }
+    setTimeout(function(){
+        selectRecord();
+    }, 20)
+
+    function nextRecord(){
+        if (selected !== "none"){
+            selected++;
+            if (selected < (amount + 1)){
+            let prev = document.getElementById('prev')
+            prev.classList.remove('disabled-button')
+            } else {
+                selected = 1;
+            }
+            selectRecord();
+            checkButtons();
+        }
+    }
+    
+    function prevRecord(){
+        if (selected !== "none"){
+            selected--;
+            if (selected > 0){
+            let next = document.getElementById('next')
+            next.classList.remove('disabled-button')
+            } else {
+                selected = amount;
+            }
+            selectRecord();
+            checkButtons();
+        }
+    }
+
+    function selectRecordMove(){
+        if (selected !== "none"){
+            window.location.href = './' + selected + '/'
+        }
+    }
+
+    function selectRecordClick(num){
+        let sel = Number(num)
+        if (selected !== sel){
+            selected = Number(num)
+            selectRecord();
+            checkButtons();
+            let playButton = document.getElementById('select')
+            playButton.classList.remove('disabled-button')
+        } else {
+            let selectedRecord = document.getElementsByClassName('unselected-' + sel)
+            selectedRecord[0].classList.remove('selected')
+            selected = "none";
+            let playButton = document.getElementById('select')
+            playButton.classList.add('disabled-button')
+            let next = document.getElementById('next')
+            next.classList.add('disabled-button')
+            let prev = document.getElementById('prev')
+            prev.classList.add('disabled-button')
+        }
+    }
+
+    function checkButtons(){
+        if (selected == "none"){
+            let next = document.getElementById('next')
+            next.classList.add('disabled-button')
+        } else {
+            let next = document.getElementById('next')
+            next.classList.remove('disabled-button')
+        }
+        if (selected == "none"){
+            let prev = document.getElementById('prev')
+            prev.classList.add('disabled-button')
+        } else {
+            let prev = document.getElementById('prev')
+            prev.classList.remove('disabled-button')
+        }
+    }
+
+</script>
+</html>
+

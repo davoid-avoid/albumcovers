@@ -1,0 +1,172 @@
+<html>
+
+<head>
+    <title>Tribute 9</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='js/howler.js'></script>
+    <script src="js/paper-full.min.js"></script>
+    <script type="text/paperscript" canvas="myCanvas">
+        var raster = new Raster('img/blood.jpg');
+        var loaded = false;
+
+    raster.on('load', function() {
+        loaded = true;
+        onResize();
+    });
+
+    raster.visible = false;
+
+    var lastPos = view.center;
+    function moveHandler(event) {
+	if (!loaded)
+		return;
+	if (lastPos.getDistance(event.point) < 10)
+		return;
+	lastPos = event.point;
+
+	var size = this.bounds.size.clone();
+	var isLandscape = size.width > size.height;
+
+
+	size /= isLandscape ? [2, 1] : [1, 2];
+
+	var path = new Path.Rectangle({
+		point: this.bounds.topLeft.floor(),
+		size: size.ceil(),
+		onMouseMove: moveHandler
+	});
+	path.fillColor = raster.getAverageColor(path);
+
+	var path = new Path.Rectangle({
+		point: isLandscape
+			? this.bounds.topCenter.ceil()
+			: this.bounds.leftCenter.ceil(),
+		size: size.floor(),
+		onMouseMove: moveHandler
+	});
+	path.fillColor = raster.getAverageColor(path);
+
+	this.remove();
+}
+
+function onResize(event) {
+	if (!loaded)
+		return;
+	project.activeLayer.removeChildren();
+
+	raster.fitBounds(view.bounds, true);
+
+	new Path.Rectangle({
+		rectangle: view.bounds,
+		fillColor: raster.getAverageColor(view.bounds),
+		onMouseMove: moveHandler
+	});
+}
+
+    </script>
+</head>
+
+<body>
+    <div id="blocker" class='visible'></div>
+
+        <div id='coverholder'>
+                <!--<img id="blood" src="img/blood.jpg"/>-->
+                <img src="img/blood-left.png" width="173" height="599px"/>
+                <canvas id="myCanvas" width="427px" height="599px"/>
+            </div>
+        </div>
+
+    <center>
+        <h1>Blood on the Tracks</h1>
+        <h3>bob dylan</h3>
+        1975 columbia
+    </center>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: black;
+        color: white;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+    }
+
+    #blocker {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 2s;
+        z-index: 99;
+        background: url('img/columbia.jpg') no-repeat center;
+        background-color: black;
+    }
+
+    .visible {
+        opacity: 1 !important;
+    }
+
+    .nodisplay {
+        display: none;
+    }
+
+    #coverholder {
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    img {
+        float: left;
+        position: relative;
+    }
+
+
+    canvas {
+        width: 427px;
+        height: 599px;
+        float: left;
+        position: relative;
+    }
+
+
+</style>
+
+<script>
+
+    var selfcontrol = new Howl({
+        src: ['audio/tangled.mp3'],
+        volume: 0.7
+    });
+
+    selfcontrol.once('load', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('visible');
+        setTimeout(function(){
+            //let blocker = document.getElementById('blocker')
+            //blocker.classList.add('nodisplay')
+        }, 2000)
+        selfcontrol.play();
+      });
+    
+      selfcontrol.on('end', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('nodisplay')
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('visible')
+        }, 1000)
+        
+      });
+
+      window.onload = function() { paper.setup('myCanvas'); }
+
+      
+
+
+</script>

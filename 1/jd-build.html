@@ -1,0 +1,178 @@
+<html>
+    <head>
+        <title>Testing for Tribute Page</title>
+    </head>
+    <body>
+        <canvas id="testing" width="625" height="600"></canvas>
+    </body>
+</html>
+
+
+
+<script type="text/javascript">
+    let canvas = document.getElementById('testing')
+    let ctx = canvas.getContext('2d')
+    ctx.fillStyle = 'black'
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    let xMin = 140
+    let xMax = canvas.width - xMin
+    let yMin = 100
+    let yMax = canvas.height - yMin
+    let nLines = 80
+    let nPoints = 60
+    let mx = (xMin + xMax) / 2
+    let dx = (xMax - xMin) / nPoints
+    let dy = (yMax - yMin) / nLines
+    let x = xMin
+    let y = yMin
+
+    let lines = []
+
+    ctx.moveTo(xMin, yMin)
+    function rand(min, max) {
+        return Math.random() * (max - min) + min
+    }
+    function randInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min
+    }
+    function randNormal(mu, sigma) {
+        let sum = 0
+        for (let i = 0; i < 6; i += 1) {
+            sum += rand(-1, 1)
+        }
+        return mu + sigma * sum / 6
+    }
+    function normalPDF(x, mu, sigma) {
+        let sigma2 = Math.pow(sigma, 2)
+        let numerator = Math.exp(-Math.pow((x - mu), 2) / (2 * sigma2))
+        let denominator = Math.sqrt(2 * Math.PI * sigma2)
+        return numerator / denominator
+    }
+    ctx.fillStyle = 'black'
+    ctx.strokeStyle = 'white'
+    ctx.lineWidth = 2
+
+    function initLines() {
+        for (let i = 0; i < nLines; i++) {
+            ctx.beginPath()
+            let nModes = randInt(1, 4)
+            let mus = []
+            let sigmas = []
+            let line = {}
+            for (let j = 0; j < nModes; j++) {
+                mus[j] = rand(mx - 60, mx + 60)
+                sigmas[j] = randNormal(24, 30)
+            }
+
+            line.nModes = nModes
+            line.mus = mus
+            line.sigmas = sigmas
+
+            let wHold = []
+
+            let w = y
+            for (let k = 0; k < nPoints; k++) {
+                x = x + dx
+                let noise = 0
+                for (let l = 0; l < nModes; l++) {
+                    noise += normalPDF(x, mus[l], sigmas[l])
+                }
+                let yy = 0.3 * w + 0.7 * (y - 600 * noise + noise * Math.random() * 170 + Math.random())
+                ctx.lineTo(x, yy)
+                w = yy
+                wHold.push(w)
+            }
+
+            line.w = wHold
+
+            lines.push(line)
+
+            ctx.fill()
+
+            ctx.stroke()
+            x = xMin
+            y = y + dy
+            ctx.moveTo(x, y)
+        }
+        setTimeout(function(){
+            animStep()
+        }, 100)
+    }
+
+    function animStep() {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+        xMin = 140
+        xMax = canvas.width - xMin
+        yMin = 100
+        yMax = canvas.height - yMin
+        x = xMin
+        y = yMin
+
+        for (let i = 0; i < lines.length; i++) {
+            ctx.beginPath()
+            for (let j = 0; j < lines[i].nModes; j++) {
+                let musTest = lines[i].mus[j] + rand(-5, 5)
+                if (musTest < mx - 60){
+                    musTest = mx - 60
+                }
+                if (musTest > mx + 60){
+                    musTest = mx + 60
+                }
+                lines[i].mus[j] = musTest
+                let sigmaTest = lines[i].sigmas[j] + rand(-10, 10)
+                if (sigmaTest > 200){
+                    sigmaTest = 200
+                }
+                if (sigmaTest < 10){
+                    sigmaTest = 50
+                }
+                lines[i].sigmas[j] = sigmaTest
+            }
+            line = {}
+
+            line.nModes = lines[i].nModes;
+            line.mus = lines[i].mus;
+            line.sigmas = lines[i].sigmas;
+
+            let wHold = []
+
+            let w = y
+            for (let k = 0; k < nPoints; k++) {
+                x = x + dx
+                let noise = 0
+                for (let l = 0; l < lines[i].nModes; l++) {
+                    noise += normalPDF(x, lines[i].mus[l], lines[i].sigmas[l])
+                }
+                let currentYY = lines[i].w[k]
+                let yy = 0.3 * w + 0.7 * (y - 600 * noise + noise * Math.random() * 170 + Math.random())
+                if (yy > (currentYY - 5)){
+                    yy = currentYY
+                }
+                ctx.lineTo(x, yy)
+                w = yy
+                wHold.push(w)
+            }
+
+            line.w = wHold
+
+            lines[i] = line
+
+            ctx.fill()
+            ctx.stroke()
+
+            x = xMin
+            y = y + dy
+            ctx.moveTo(x, y)
+        }
+        setTimeout(function(){
+            animStep()
+        }, 100)
+    }
+
+    initLines();
+
+</script>

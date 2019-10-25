@@ -1,0 +1,185 @@
+<html>
+
+<head>
+    <title>Tribute 5</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='howler.js'></script>
+</head>
+
+<body>
+    <div id="blocker" class='visible'></div>
+    <center>
+        <div id='coverholder'>
+            <div id='sky3' class='layer'></div>
+            <div id='sky2' class='layer'></div>
+            <div id='sky1' class='layer'></div>
+
+            <div id='sun' class='layer'></div>
+
+            <div id='bird' class='layer'></div>
+
+            <div id='city3' class='layer'></div>
+            <div id='city2' class='layer'></div>
+            <div id='city1' class='layer'></div>
+        </div>
+    </center>
+    <center>
+        <h1>I'm Wide Awake, It's Morning</h1>
+        <h3>bright eyes</h3>
+        2005 saddle creek
+    </center>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: white;
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+    }
+
+    #blocker {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        transition: all 8s;
+        z-index: 99;
+        background: url('images/sc.png') no-repeat center;
+        background-color: white;
+    }
+
+    .visible {
+        opacity: 1 !important;
+    }
+
+    #coverholder {
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    .layer {
+        position: absolute;
+        transition: opacity 80s;
+        width: 600px;
+        height: 600px;
+        top: 0;
+        left: 0;
+        opacity: 1;
+    }
+
+    #city1 {
+        background: url('images/city1.png') no-repeat;
+    }
+
+    #city2 {
+        background: url('images/city2.png') no-repeat;
+    }
+
+    #city3 {
+        background: url('images/city3.png') no-repeat;
+    }
+
+    #sky1 {
+        background: url('images/sky1.png') no-repeat;
+    }
+
+    #sky2 {
+        background: url('images/sky2.png') no-repeat;
+    }
+
+    #sky3 {
+        background: url('images/sky3.png') no-repeat;
+    }
+
+    #sun {
+        background: url('images/sun.png') no-repeat;
+        top: 50%;
+        transition: top linear 200s;
+    }
+
+    #bird {
+        background: url('images/bird.png') no-repeat;
+        top: 2%;
+        left: -20%;
+        transition: all linear 5s;
+    }
+
+    .movebird {
+        top: -4% !important;
+        left: 55% !important;
+    }
+
+    .sunrise {
+        top: 0% !important;
+    }
+
+    .invisible {
+        opacity: 0 !important;
+    }
+</style>
+
+<script>
+
+    let currentLayer = 1;
+    let maxLayer = 2;
+
+    var oak = new Howl({
+        src: ['audio/oak.mp3'],
+        volume: 0.7
+    });
+
+    oak.once('load', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('visible')
+        startAnimChain();
+        moveBird();
+        oak.play();
+      });
+    
+      oak.on('end', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.add('visible')
+      });
+
+
+    setTimeout(function(){
+
+    }, 5000)
+
+    function startAnimChain(){
+        setTimeout(function(){
+            addInvisible(currentLayer)
+
+            let sun = document.getElementById('sun')
+            sun.classList.add('sunrise')
+        }, 70000)
+    }
+
+    function addInvisible(num){
+        let city = document.getElementById('city' + num)
+        city.classList.add('invisible')
+        let sky = document.getElementById('sky' + num)
+        sky.classList.add('invisible')
+
+        if (currentLayer !== maxLayer){
+            currentLayer++;
+            setTimeout(function(){
+                addInvisible(currentLayer)
+            }, 80000)
+        }
+    }
+
+    function moveBird(){
+        setTimeout(function(){
+            let bird = document.getElementById('bird')
+            bird.classList.add('movebird')
+        }, 206000)
+    }
+</script>

@@ -1,0 +1,167 @@
+<html>
+
+<head>
+    <title>Tribute 10</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='js/howler.js'></script>
+</head>
+
+<body>
+    <div id="blocker" class='visible'></div>
+
+        <div id='coverholder'>
+            <canvas id="viz" width="600px" height="600px"/>
+            </div>
+        </div>
+
+    <center>
+        <h1>Silent Shout</h1>
+        <h3>the knife</h3>
+        2006 rabid
+    </center>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: black;
+        color: white;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+    }
+
+    #blocker {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 2s;
+        z-index: 99;
+        background: url('img/rabid.jpg') no-repeat center;
+        background-color: black;
+    }
+
+    .visible {
+        opacity: 1 !important;
+    }
+
+    .nodisplay {
+        display: none;
+    }
+
+    #coverholder {
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    canvas {
+        width: 600px;
+        height: 600px;
+        position: absolute;
+    }
+
+
+</style>
+
+<script>
+
+    var selfcontrol = new Howl({
+        src: ['audio/shout.mp3'],
+        volume: 0.7
+    });
+
+    selfcontrol.once('load', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('visible');
+        setTimeout(function(){
+            //let blocker = document.getElementById('blocker')
+            //blocker.classList.add('nodisplay')
+        }, 2000)
+        selfcontrol.play();
+      });
+    
+      selfcontrol.on('end', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('nodisplay')
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('visible')
+        }, 1000)
+        
+      });
+
+
+    var analyser = Howler.ctx.createAnalyser();
+    Howler.masterGain.connect(analyser);
+
+    analyser.fftSize = 2048;
+    var bufferLength = analyser.frequencyBinCount;
+    var dataArray = new Uint8Array(bufferLength);
+    analyser.getByteTimeDomainData(dataArray);
+
+
+    var canvas = document.getElementById("viz");
+    var canvasCtx = canvas.getContext("2d");
+
+    var background = new Image();
+    background.src = "img/silent.jpg";
+
+    var imageObj = new Image();
+    imageObj.src = "img/disk.png"
+
+    function draw() {
+
+      
+        analyser.getByteTimeDomainData(dataArray);
+        canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+        canvasCtx.drawImage(background,0,0);   
+      
+        canvasCtx.lineWidth = 2;
+        canvasCtx.strokeStyle = "rgb(255, 255, 255)";
+      
+        canvasCtx.beginPath();
+      
+        var sliceWidth = canvas.width * 1.0 / bufferLength;
+        var x = 0;
+        var y = 0;
+      
+        for (var i = 0; i < bufferLength; i++) {
+      
+          var v = dataArray[i] / 128.0;
+          y = v * canvas.height / 2;
+      
+          if (i === 0) {
+            canvasCtx.moveTo(x, y);
+          } else {
+            canvasCtx.lineTo(x, y);
+          }
+      
+          x += sliceWidth;
+        }
+      
+        canvasCtx.lineTo(canvas.width, canvas.height / 2);
+        canvasCtx.stroke();
+
+        canvasCtx.setTransform(y/300, 0, 0, y/300, canvasCtx.canvas.width / 2, canvasCtx.canvas.height / 2);
+        canvasCtx.drawImage(imageObj,-imageObj.width / 2,-imageObj.height / 2); // draw the image offset by half
+
+        canvasCtx.setTransform(1, 0, 0, 1, 0, 0);
+
+        //canvasCtx.drawImage(imageObj, canvas.width/2 - imageObj.width / 2, canvas.height/2 - imageObj.height / 2, y, y)
+
+        setTimeout(function(){
+            draw();
+        }, 20)
+      }
+      
+      draw();
+
+      
+
+
+</script>
