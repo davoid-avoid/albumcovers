@@ -1,0 +1,238 @@
+<html>
+
+<head>
+    <title>Tribute 14</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='js/howler.js'></script>
+</head>
+
+<body>
+    <div id="blocker" class='visible'></div>
+
+    <div id='coverholder'>
+        <div class="layer top" id="top1"></div>
+        <div class="layer top" id="top2"></div>
+        <div class="layer top" id="top3"></div>
+        <div class="layer top" id="top4"></div>
+        <div class="layer top" id="top5"></div>
+
+        <div class="layer small" id="small1"></div>
+        <div class="layer small" id="small2"></div>
+        <div class="layer small" id="small3"></div>
+        <div class="layer small" id="small4"></div>
+        <div class="layer small" id="small5"></div>
+
+        <div class="layer large" id="large1"></div>
+        <div class="layer large" id="large2"></div>
+        <div class="layer large" id="large3"></div>
+        <div class="layer large" id="large4"></div>
+        <div class="layer large" id="large5"></div>
+
+        <div class="layer cover-layer"></div>
+    </div>
+
+    <center>
+        <h1>The Lonesome Crowded West</h1>
+        <h3>modest mouse</h3>
+        1997 fat possum
+    </center>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: white;
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+    }
+
+    #blocker {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 2s;
+        z-index: 99;
+        background: url('img/possum.jpg') no-repeat center;
+        background-color: white;
+    }
+
+    .visible {
+        opacity: 1 !important;
+    }
+
+    .nodisplay {
+        display: none;
+    }
+
+    #coverholder {
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    .layer {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        transition: opacity 3s;
+    }
+
+    .active-layer {
+        opacity: 1;
+    }
+
+    .cover-layer {
+        background: url('img/westcover.png');
+        opacity: 1;
+    }
+
+    #top1 {
+        background: url('img/top1.png')
+    }
+
+    #top2 {
+        background: url('img/top2.png')
+    }
+
+    #top3 {
+        background: url('img/top3.png')
+    }
+
+    #top4 {
+        background: url('img/top4.png')
+    }
+
+    #top5 {
+        background: url('img/top5.png')
+    }
+
+    #large1 {
+        background: url('img/large1.png')
+    }
+
+    #large2 {
+        background: url('img/large2.png')
+    }
+
+    #large3 {
+        background: url('img/large3.png')
+    }
+
+    #large4 {
+        background: url('img/large4.png')
+    }
+
+    #large5 {
+        background: url('img/large5.png')
+    }
+
+    #small1 {
+        background: url('img/small1.png')
+    }
+
+    #small2 {
+        background: url('img/small2.png')
+    }
+
+    #small3 {
+        background: url('img/small3.png')
+    }
+
+    #small4 {
+        background: url('img/small4.png')
+    }
+
+    #small5 {
+        background: url('img/small5.png')
+    }
+</style>
+
+<script>
+
+    var selfcontrol = new Howl({
+        src: ['audio/selling.mp3'],
+        volume: 0.7
+    });
+
+    selfcontrol.once('load', function () {
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('visible');
+        setTimeout(function () {
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('nodisplay')
+        }, 2000)
+        selfcontrol.play();
+    });
+
+    selfcontrol.on('end', function () {
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('nodisplay')
+        setTimeout(function () {
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('visible')
+        }, 1000)
+
+    });
+
+    function getRandomArbitrary(min, max) {
+        return Math.round(Math.random() * (max - min) + min);
+    }
+
+    function setImage(type, num) {
+        let types = document.getElementsByClassName(type);
+        for (let i = 0; i < types.length; i++) {
+            types[i].classList.remove('active-layer')
+        }
+        let target = document.getElementById(type + "" + num);
+        target.classList.add('active-layer');
+    }
+
+    var currtop = getRandomArbitrary(1, 5);
+    var currlarge = getRandomArbitrary(1, 5);
+    var currsmall = getRandomArbitrary(1, 5);
+
+    setImage("top", currtop);
+    setImage("large", currlarge);
+    setImage("small", currsmall)
+
+    var topTime = getRandomArbitrary(5000, 15000);
+    var largeTime = getRandomArbitrary(5000, 15000);
+    var smallTime = getRandomArbitrary(5000, 15000);
+
+    function topTimer() {
+        setInterval(function () {
+            currtop = getRandomArbitrary(1, 5);
+            setImage("top", currtop)
+        }, topTime)
+    }
+
+    function smallTimer() {
+        setInterval(function () {
+            currsmall = getRandomArbitrary(1, 5);
+            setImage("small", currsmall)
+        }, smallTime)
+    }
+
+    function largeTimer() {
+        setInterval(function () {
+            currlarge = getRandomArbitrary(1, 5);
+            setImage("large", currlarge)
+        }, largeTime)
+    }
+
+    topTimer();
+    smallTimer();
+    largeTimer();
+
+
+
+</script>

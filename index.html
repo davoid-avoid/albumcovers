@@ -151,6 +151,10 @@
         left: 390px;
     }
 
+    .unselected-14 {
+        left: 420px;
+    }
+
     #joydivision {
         background: url('covers/unknown-pleasures.jpg');
         background-size: contain;
@@ -213,6 +217,11 @@
 
     #tubular {
         background: url('covers/tubular.jpg');
+        background-size: contain;
+    }
+
+    #west {
+        background: url('covers/west.jpg');
         background-size: contain;
     }
 
@@ -307,6 +316,10 @@
     .unselected-13 {
         left: 260px;
     }
+
+    .unselected-14 {
+        left: 280px;
+    }
     }
 </style>
 </head>
@@ -326,6 +339,7 @@
     <div id="soul" class="record unselected-11" onclick="selectRecordClick('11')"></div>
     <div id="country" class="record unselected-12" onclick="selectRecordClick('12')"></div>
     <div id="tubular" class="record unselected-13" onclick="selectRecordClick('13')"></div>
+    <div id="west" class="record unselected-14" onclick="selectRecordClick('14')"></div>
 </div>
 </div>
 <div class="middle">
@@ -339,7 +353,7 @@
 
 <script>
     let selected = 1;
-    let amount = 13;
+    let amount = 14;
 
     function selectRecord(){
         let records = document.getElementsByClassName('record')
