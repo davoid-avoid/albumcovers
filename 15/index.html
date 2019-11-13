@@ -1,0 +1,280 @@
+<html>
+
+<head>
+    <title>Tribute 15</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src='js/howler.js'></script>
+</head>
+
+<body>
+    <div id="blocker" class='visible'></div>
+
+        <div id='coverholder'>
+            <div id="plantasia-backer"></div>
+            <canvas id="plantasia" width="600px" height="600px"/>
+        </div>
+
+    <center>
+        <h1>Plantasia</h1>
+        <h3>mort garson</h3>
+        1976 homewood
+    </center>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: white;
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+    }
+
+    #blocker {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 2s;
+        z-index: 99;
+        background: url('img/homewood.jpg') no-repeat center;
+        background-color: white;
+    }
+
+    .visible {
+        opacity: 1 !important;
+    }
+
+    .nodisplay {
+        display: none;
+    }
+
+    #coverholder {
+        width: 600px;
+        height: 600px;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    #plantasia-backer {
+        width: 100%;
+        height: 100%;
+        background: url('img/plantasia.png');
+        background-size: cover;
+        position: absolute;
+    }
+
+    canvas {
+        width: 600px;
+        height: 600px;
+        position: absolute;
+    }
+
+
+</style>
+
+<script>
+
+    var selfcontrol = new Howl({
+        src: ['audio/plantasia.mp3'],
+        volume: 0.7
+    });
+
+    selfcontrol.once('load', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('visible');
+        setTimeout(function(){
+            //let blocker = document.getElementById('blocker')
+            //blocker.classList.add('nodisplay')
+            initTree();
+        }, 2000)
+        selfcontrol.play();
+      });
+    
+      selfcontrol.on('end', function(){
+        let blocker = document.getElementById('blocker')
+        blocker.classList.remove('nodisplay')
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('visible')
+        }, 1000)
+        
+      });
+
+
+      function initTree() {
+
+        var requestAnimationFrame = (function() {
+            return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+            function(callback, element) {
+                window.setTimeout(callback, 1000 / 16);
+            };
+        })();
+    
+        var branches = [];
+        var growth_rate = 0.05;
+        var maximum_bend = 90 / 180 * Math.PI;
+        var smallest_branch = 20;
+        var hue = getRandomInt(60, 160);
+        var fps;
+        var canvas;
+        var ctx;
+    
+        var avgTime = 0;
+        var frameCounter = 0;
+        var trackFrames = 60;
+
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+    
+        function each(array, fn) {
+            var idx = 0,
+                len = array.length;
+    
+            for (; idx < len; idx++) {
+                fn(array[idx]);
+            }
+        }
+    
+
+            canvas = document.getElementById('plantasia');
+            ctx = canvas.getContext('2d');
+
+            ctx.lineCap = 'square';
+    
+            plant_tree();
+    
+            loop();
+
+    
+        function hsl(lightness) {
+            return 'hsl(' + hue + ',70%,' + lightness + '%)';
+        }
+    
+        function loop(onFrame) {
+    
+            var startDate = new Date();
+    
+            update();
+            draw(ctx);
+    
+            var endDate = new Date();
+            var duration = (endDate - startDate);
+            avgTime += duration;
+    
+            frameCounter++;
+            if (frameCounter >= trackFrames) {
+                avgTime = avgTime / trackFrames;
+                var avgFps = Math.floor(1000 / avgTime);
+                if (avgFps > 60) avgFps = 60;
+                avgTime = 0;
+                frameCounter = 0;
+            }
+    
+            requestAnimationFrame(loop);
+        }
+    
+        function plant_tree() {
+            var magnitude = 60,
+                l = 50,
+                thickness = 14,
+                theta = 0,
+                origin = {
+                    x: (canvas.width / 2) - 10,
+                    y: canvas.height - 140
+                };
+    
+            branches = [create_branch(origin, magnitude, thickness, theta, l)];
+        }
+    
+        function update() {
+            each(branches, grow_branch);
+        }
+    
+        function draw(ctx) {
+    
+            each(branches, function(branch) {
+                var w = branch.thickness;
+                var oX1 = branch.origin.x - w;
+                var oX2 = branch.origin.x + w;
+                var oY = branch.origin.y;
+                var tX1 = branch.tip.x - w * 0.8;
+                var tX2 = branch.tip.x + w * 0.8;
+                var tY = branch.tip.y;
+                var cpX1 = (oX1 + oX1 + tX1) / 3;
+                var cpY1 = (oY + tY + tY) / 3;
+                var cpX2 = (oX2 + oX2 + tX2) / 3;
+                var cpY2 = (oY + tY + tY) / 3;
+                ctx.beginPath();
+                ctx.moveTo(oX1, oY);
+                ctx.quadraticCurveTo(cpX1, cpY1, tX1, tY);
+                ctx.lineTo(tX2, tY);
+                ctx.quadraticCurveTo(cpX2, cpY2, oX2, oY);
+                ctx.lineWidth = 1;
+                ctx.fillStyle = hsl(branch.lightness);
+                ctx.fill();
+            });
+        }
+    
+        function grow_branch(branch) {
+            if (branch.done) return;
+    
+            var x = (branch.tip.x - branch.origin.x);
+            var y = (branch.tip.y - branch.origin.y);
+            var h = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    
+            if (h >= branch.magnitude) {
+                branch.done = true;
+    
+                if (branch.magnitude < smallest_branch) return;
+                shoot(branch);
+    
+                return;
+            }
+    
+            branch.tip.x = branch.tip.x + (Math.sin(branch.theta) * growth_rate);
+            branch.tip.y = branch.tip.y - (Math.cos(branch.theta) * growth_rate);
+        }
+    
+        function shoot(branch) {
+            if (branch.sprouts <= 0) return;
+            branch.sprouts -= 1;
+            shoot(branch);
+    
+            var theta2 = branch.theta + (Math.random() * maximum_bend - maximum_bend / 2);
+            var magnitude2 = branch.magnitude * (Math.random() * 0.2 + 0.7);
+            var lightness2 = branch.lightness * 0.9;
+    
+            branches.push(create_branch({
+                x: branch.tip.x,
+                y: branch.tip.y
+            }, magnitude2, branch.thickness * 0.6, theta2, lightness2));
+        }
+    
+        function create_branch(origin, magnitude, thickness, theta, lightness) {
+            return {
+                origin: origin,
+                thickness: thickness,
+                theta: theta,
+                magnitude: magnitude,
+                tip: {
+                    x: origin.x,
+                    y: origin.y
+                },
+                lightness: lightness,
+                sprouts: ((Math.random() * 4) + 1) >>> 0
+            };
+        }
+    
+    };
+
+      
+
+
+</script>
