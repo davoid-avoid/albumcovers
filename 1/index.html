@@ -16,6 +16,8 @@
         <h3>joy division</h3>
         1979 factory records
     </center>
+    <br>
+    <center><a href="../">Back</a></center>
 </body>
 
 </html>
@@ -32,10 +34,10 @@
         width: 100vw;
         height: 100vh;
         opacity: 0;
-        transition: all 8s;
-        -webkit-transition: all 8s;
-        -moz-transition: all 8s;
-        -o-transition: all 8s;
+        transition: all 2s;
+        -webkit-transition: all 2s;
+        -moz-transition: all 2s;
+        -o-transition: all 2s;
         z-index: 99;
         background: url('factory.jpg') no-repeat center;
         background-color: black;
@@ -43,6 +45,14 @@
 
     .visible {
         opacity: 1 !important;
+    }
+
+    .nodisplay {
+        display: none;
+    }
+
+    a {
+        color: white;
     }
 </style>
 
@@ -221,6 +231,10 @@
         let blocker = document.getElementById('blocker')
         blocker.classList.remove('visible')
         disorder.play();
+        setTimeout(function(){
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('nodisplay')
+        }, 2000)
       });
     
       disorder.on('end', function(){

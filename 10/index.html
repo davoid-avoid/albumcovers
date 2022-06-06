@@ -19,6 +19,8 @@
         <h3>the knife</h3>
         2006 rabid
     </center>
+    <br>
+    <center><a href="../">Back</a></center>
 </body>
 
 </html>
@@ -53,6 +55,10 @@
         display: none;
     }
 
+    a {
+        color: white;
+    }
+
     #coverholder {
         width: 600px;
         height: 600px;
@@ -82,8 +88,8 @@
         let blocker = document.getElementById('blocker')
         blocker.classList.remove('visible');
         setTimeout(function(){
-            //let blocker = document.getElementById('blocker')
-            //blocker.classList.add('nodisplay')
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('nodisplay')
         }, 2000)
         selfcontrol.play();
       });

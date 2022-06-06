@@ -19,6 +19,8 @@
         <h3>mort garson</h3>
         1976 homewood
     </center>
+    <br>
+    <center><a href="../">Back</a></center>
 </body>
 
 </html>
@@ -51,6 +53,10 @@
 
     .nodisplay {
         display: none;
+    }
+
+    a {
+        color: black;
     }
 
     #coverholder {
@@ -90,8 +96,8 @@
         let blocker = document.getElementById('blocker')
         blocker.classList.remove('visible');
         setTimeout(function(){
-            //let blocker = document.getElementById('blocker')
-            //blocker.classList.add('nodisplay')
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('nodisplay')
             initTree();
         }, 2000)
         selfcontrol.play();

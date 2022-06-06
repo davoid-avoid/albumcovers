@@ -81,6 +81,8 @@ function onResize(event) {
         <h3>bob dylan</h3>
         1975 columbia
     </center>
+    <br>
+    <center><a href="../">Back</a></center>
 </body>
 
 </html>
@@ -112,7 +114,11 @@ function onResize(event) {
     }
 
     .nodisplay {
-        display: none;
+        height: 620px !important;
+    }
+
+    a {
+        color: white;
     }
 
     #coverholder {
@@ -151,8 +157,8 @@ function onResize(event) {
         let blocker = document.getElementById('blocker')
         blocker.classList.remove('visible');
         setTimeout(function(){
-            //let blocker = document.getElementById('blocker')
-            //blocker.classList.add('nodisplay')
+            let blocker = document.getElementById('blocker')
+            blocker.classList.add('nodisplay')
         }, 2000)
         selfcontrol.play();
       });
